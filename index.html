@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101126">
+  <title>Sophia MEI — Assistente inteligente</title>
+  <style>
+    :root{--bg:#0b0c1b;--panel:#14162b;--panel2:#1b1e38;--line:rgba(255,255,255,.09);--text:#f5f5ff;--muted:#a5a8c3;--purple:#9a83ff;--cyan:#6bdcf3;--green:#76e0b0}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#28204e 0,transparent 38%),radial-gradient(ellipse at 90% 20%,#123344 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    button,input,textarea{font:inherit}button{cursor:pointer}
+    .layout{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+    aside{padding:25px 17px;border-right:1px solid var(--line);background:rgba(10,11,27,.72);backdrop-filter:blur(16px);display:flex;flex-direction:column;gap:25px}
+    .brand{display:flex;align-items:center;gap:12px;padding:5px 8px}.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#a38aff,#5ccfe8);display:grid;place-items:center;color:#101126;font-weight:900;font-size:21px;box-shadow:0 8px 30px #8e75ff44}
+    .brand strong{display:block;font-size:17px;letter-spacing:.2px}.brand small{color:var(--muted);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+    .nav-label{font-size:10px;color:#777b9c;text-transform:uppercase;letter-spacing:1.5px;padding:0 11px;margin-bottom:7px}
+    nav{display:grid;gap:5px}nav button{border:0;background:transparent;color:var(--muted);text-align:left;padding:11px 12px;border-radius:11px;display:flex;align-items:center;gap:12px}nav button:hover,nav button.active{background:#292448;color:#fff}nav .ico{width:20px;text-align:center;font-size:17px}
+    .side-bottom{margin-top:auto}.status{border:1px solid var(--line);border-radius:14px;padding:13px;background:#14162b}.status b{font-size:12px}.status p{margin:5px 0 0;color:var(--muted);font-size:11px}.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:6px;box-shadow:0 0 10px var(--green)}
+    main{padding:30px clamp(18px,4vw,55px);max-width:1450px;width:100%;margin:0 auto}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:32px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2px;text-transform:uppercase}.top h1{font-size:clamp(25px,3vw,34px);margin:5px 0 0;letter-spacing:-1px}.profile{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#9d83ff,#5ed8e8);color:#111329;font-weight:800}
+    .welcome{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;margin-bottom:20px}.hero,.card{background:linear-gradient(145deg,rgba(29,30,59,.94),rgba(18,20,39,.94));border:1px solid var(--line);border-radius:20px;box-shadow:0 15px 50px #0002}.hero{padding:27px;position:relative;overflow:hidden;min-height:220px}.hero:after{content:"✧";position:absolute;right:35px;top:5px;font-size:150px;color:#a38aff16}.hero h2{font-size:25px;margin:8px 0}.hero p{color:var(--muted);max-width:540px;margin:0 0 20px}.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid #6bdcf344;border-radius:30px;padding:5px 10px;color:#a9effa;font-size:11px}.primary{border:0;border-radius:11px;background:linear-gradient(100deg,#9b83ff,#66d7ee);color:#101126;font-weight:750;padding:11px 16px;box-shadow:0 8px 25px #8977ff33}.primary:hover{filter:brightness(1.08)}.orb-card{display:grid;place-items:center;text-align:center;padding:20px}.orb{width:116px;height:116px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d7ff,#9b83ff 35%,#3b3b86 68%,#142e49);box-shadow:0 0 0 12px #9a83ff0c,0 0 55px #8e75ff66;position:relative;margin-bottom:14px}.orb:before,.orb:after{content:"";position:absolute;border:1px solid #b9aaff66;border-radius:50%;inset:-12px;transform:rotate(35deg) scaleY(.35)}.orb:after{transform:rotate(-35deg) scaleY(.35)}.orb-card b{font-size:14px}.orb-card small{color:var(--muted)}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px}.section-head h3{margin:0;font-size:16px}.section-head span{font-size:11px;color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.stat{padding:17px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:5px}.stat em{font-style:normal;color:var(--green);font-size:11px}
+    .content-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.card{padding:19px}.task-list{display:grid;gap:10px}.task{display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:#ffffff06}.task input{accent-color:#9b83ff;width:16px;height:16px}.task label{flex:1;font-size:13px}.tag{font-size:10px;padding:4px 8px;border-radius:20px;background:#9b83ff20;color:#c7bbff}.empty{color:var(--muted);font-size:13px}.quick{display:grid;gap:9px}.quick button{padding:12px;border:1px solid var(--line);border-radius:11px;background:#ffffff05;color:var(--text);text-align:left}.quick button:hover{border-color:#9b83ff88;background:#9b83ff12}
+    .chat{margin-top:16px}.chatbox{display:flex;gap:10px;margin-top:12px}.chatbox input{min-width:0;flex:1;background:#0d0f20;border:1px solid var(--line);border-radius:12px;padding:13px;color:#fff;outline:none}.chatbox input:focus{border-color:#9b83ff}.reply{margin-top:12px;padding:12px 14px;background:#ffffff07;border:1px solid var(--line);border-radius:12px;color:#d9daf0;font-size:13px;display:none}.footer{color:#777b9c;font-size:11px;text-align:center;margin:25px 0 5px}
+    .notice{font-size:11px;color:#aeb1cb;margin-top:9px}.mobile-menu{display:none}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:5;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;justify-content:space-between}.brand{padding:0}.logo{width:36px;height:36px}.nav-label,.side-bottom{display:none}nav{display:flex;gap:2px}nav button{padding:9px}.nav-text{display:none}main{padding-top:22px}.welcome{grid-template-columns:1fr}.orb-card{display:none}}
+    @media(max-width:560px){.top{margin-bottom:20px}.profile span{display:none}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{display:none}.content-grid{grid-template-columns:1fr}.hero{padding:22px}.hero h2{font-size:22px}nav button{padding:8px}.nav .ico{font-size:16px}}
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <div class="brand"><div class="logo">S</div><div><strong>Sophia MEI</strong><small>Inteligência evolutiva</small></div></div>
+    <div style="flex:1">
+      <div class="nav-label">Workspace</div>
+      <nav aria-label="Navegação principal">
+        <button class="active" data-section="inicio"><span class="ico">⌂</span><span class="nav-text">Visão geral</span></button>
+        <button data-section="tarefas"><span class="ico">✓</span><span class="nav-text">Minhas tarefas</span></button>
+        <button data-section="memoria"><span class="ico">◈</span><span class="nav-text">Memória</span></button>
+        <button data-section="aprovacoes"><span class="ico">◇</span><span class="nav-text">Aprovações</span></button>
+      </nav>
+    </div>
+    <div class="side-bottom"><div class="status"><b><span class="dot"></span>Sistema preparado</b><p>Interface inicial ativa. Conexão com IA será configurada na próxima etapa.</p></div></div>
+  </aside>
+  <main>
+    <header class="top">
+      <div><div class="eyebrow">Seu espaço inteligente</div><h1>Bom ter você por aqui.</h1></div>
+      <div class="profile"><div class="avatar">S</div><span>Sua assistente Sophia</span></div>
+    </header>
+    <section class="welcome">
+      <div class="hero">
+        <span class="pill"><span class="dot"></span> Pronta para começar</span>
+        <h2>Olá! Eu sou a Sophia.</h2>
+        <p>Sou sua assistente inteligente. Posso ajudar a organizar ideias, planejar tarefas e transformar objetivos em etapas claras. Vamos construir isso juntas.</p>
+        <button class="primary" id="focusChat">Conversar com Sophia&nbsp; ↗</button>
+      </div>
+      <div class="card orb-card"><div class="orb" aria-hidden="true"></div><b>Inteligência em evolução</b><small>Aprender · Planejar · Melhorar</small></div>
+    </section>
+    <div class="section-head"><h3>Seu painel</h3><span id="today"></span></div>
+    <section class="stats">
+      <div class="card stat"><small>Tarefas registradas</small><strong id="totalTasks">2</strong><em>Organize suas prioridades</em></div>
+      <div class="card stat"><small>Concluídas</small><strong id="doneTasks">0</strong><em>Um passo de cada vez</em></div>
+      <div class="card stat"><small>Aprovações pendentes</small><strong>0</strong><em>Você mantém o controle</em></div>
+    </section>
+    <div class="content-grid">
+      <section>
+        <div class="section-head"><h3>Próximas tarefas</h3><span>Lista local de demonstração</span></div>
+        <div class="card"><div class="task-list" id="taskList">
+          <div class="task"><input type="checkbox" aria-label="Concluir revisar objetivos da Sophia"><label>Revisar objetivos da Sophia</label><span class="tag">Projeto</span></div>
+          <div class="task"><input type="checkbox" aria-label="Concluir preparar primeira versão"><label>Preparar primeira versão do site</label><span class="tag">Hoje</span></div>
+        </div>
+        <form class="chatbox" id="taskForm"><input id="newTask" placeholder="Adicionar uma tarefa..." maxlength="100" aria-label="Nova tarefa"><button class="primary" type="submit">Adicionar</button></form></div>
+      </section>
+      <section>
+        <div class="section-head"><h3>Acesso rápido</h3><span>Atalhos</span></div>
+        <div class="card quick">
+          <button data-message="Ajude-me a planejar minhas tarefas de hoje.">✦ &nbsp; Planejar meu dia</button>
+          <button data-message="Quero registrar uma ideia importante.">◈ &nbsp; Registrar uma ideia</button>
+          <button data-message="Explique como funciona a evolução da Sophia.">↗ &nbsp; Conhecer a evolução</button>
+        </div>
+      </section>
+    </div>
+    <section class="card chat" id="chat">
+      <div class="section-head" style="margin-top:0"><h3>Converse com Sophia</h3><span>Modo de demonstração</span></div>
+      <div class="reply" id="reply" role="status"></div>
+      <form class="chatbox" id="chatForm"><input id="message" placeholder="Escreva sua mensagem..." autocomplete="off" aria-label="Mensagem para Sophia"><button class="primary" type="submit">Enviar</button></form>
+      <div class="notice">Esta primeira versão demonstra a interface. A inteligência artificial e a memória no Supabase serão conectadas em uma próxima etapa.</div>
+    </section>
+    <div class="footer">Sophia MEI · Assistente inteligente com autonomia supervisionada</div>
+  </main>
+</div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  $('today').textContent = new Intl.DateTimeFormat('pt-BR',{dateStyle:'full'}).format(new Date());
+  function updateCounts(){const boxes=[...document.querySelectorAll('#taskList input[type=checkbox]')];$('totalTasks').textContent=boxes.length;$('doneTasks').textContent=boxes.filter(x=>x.checked).length;}
+  $('taskList').addEventListener('change',e=>{if(e.target.matches('input')){e.target.nextElementSibling.style.textDecoration=e.target.checked?'line-through':'none';e.target.nextElementSibling.style.opacity=e.target.checked?'.55':'1';updateCounts();}});
+  $('taskForm').addEventListener('submit',e=>{e.preventDefault();const value=$('newTask').value.trim();if(!value)return;const row=document.createElement('div');row.className='task';const check=document.createElement('input');check.type='checkbox';check.setAttribute('aria-label','Concluir '+value);const label=document.createElement('label');label.textContent=value;const tag=document.createElement('span');tag.className='tag';tag.textContent='Nova';row.append(check,label,tag);$('taskList').append(row);$('newTask').value='';updateCounts();});
+  function showReply(message){$('reply').style.display='block';$('reply').textContent='Recebi sua mensagem: “'+message+'”. Nesta versão inicial, o chat é demonstrativo. Na próxima etapa vamos conectar um modelo de IA por uma função segura no servidor, para que Sophia possa responder de verdade.';}
+  $('chatForm').addEventListener('submit',e=>{e.preventDefault();const value=$('message').value.trim();if(value){showReply(value);$('message').value='';}});
+  document.querySelectorAll('[data-message]').forEach(b=>b.addEventListener('click',()=>{ $('message').value=b.dataset.message;$('message').focus();}));
+  $('focusChat').addEventListener('click',()=>{$('chat').scrollIntoView({behavior:'smooth'});$('message').focus();});
+  document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(b.dataset.section==='tarefas')document.querySelector('#taskList').scrollIntoView({behavior:'smooth'});else if(b.dataset.section==='inicio')window.scrollTo({top:0,behavior:'smooth'});else if(b.dataset.section==='memoria'||b.dataset.section==='aprovacoes'){showReply(b.dataset.section==='memoria'?'A área de memória será ativada quando conectarmos o banco de dados.':'A central de aprovações será ativada quando implementarmos o executor seguro.');$('chat').scrollIntoView({behavior:'smooth'});}}));
+  updateCounts();
+</script>
+</body>
+</html>
