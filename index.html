@@ -102,5 +102,17 @@
   document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(b.dataset.section==='tarefas')document.querySelector('#taskList').scrollIntoView({behavior:'smooth'});else if(b.dataset.section==='inicio')window.scrollTo({top:0,behavior:'smooth'});else if(b.dataset.section==='memoria'||b.dataset.section==='aprovacoes'){showReply(b.dataset.section==='memoria'?'A área de memória será ativada quando conectarmos o banco de dados.':'A central de aprovações será ativada quando implementarmos o executor seguro.');$('chat').scrollIntoView({behavior:'smooth'});}}));
   updateCounts();
 </script>
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+  const SUPABASE_URL = https://yuqcgewmnzjcluifcaqe.supabase.co/rest/v1/;
+  const SUPABASE_KEY = sb_publishable_14td8JVRdzlgvpzH0OroIg_h9q5PNCK;
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  window.sophiaSupabase = supabase;
+
+  console.log('Conexão da Sophia com Supabase preparada!');
+</script>
 </body>
 </html>
