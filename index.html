@@ -111,6 +111,20 @@
 
   window.sophiaSupabase = supabase;
 
+      // Identifica se existe uma sessão administrativa
+  async function verificarAcessoAdmin() {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+      console.error('Erro ao verificar sessão:', error);
+      return false;
+    }
+
+    return !!data.session;
+  }
+
+  window.verificarAcessoAdmin = verificarAcessoAdmin;
+    
     const chatForm = document.getElementById('chatForm');
   const messageInput = document.getElementById('message');
   const replyBox = document.getElementById('reply');
