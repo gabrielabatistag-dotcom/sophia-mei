@@ -216,6 +216,63 @@ window.verificarSeSouAdmin = verificarSeSouAdmin;
       sendButton.textContent = 'Enviar';
     }
   });
+
+// Login administrativo da Sophia
+const adminLoginForm = document.getElementById('adminLoginForm');
+const adminEmail = document.getElementById('adminEmail');
+const adminPassword = document.getElementById('adminPassword');
+const adminStatus = document.getElementById('adminStatus');
+const adminPanel = document.getElementById('adminPanel');
+const adminLogout = document.getElementById('adminLogout');
+
+async function atualizarPainelAdmin() {
+  const autorizado = await window.verificarSeSouAdmin();
+
+  if (autorizado) {
+    adminLoginForm.hidden = true;
+    adminPanel.hidden = false;
+    adminStatus.textContent = 'Acesso administrativo autorizado!';
+  } else {
+    adminLoginForm.hidden = false;
+    adminPanel.hidden = true;
+  }
+}
+
+adminLoginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  adminStatus.textContent = 'Verificando acesso...';
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: adminEmail.value.trim(),
+    password: adminPassword.value
+  });
+
+  if (error) {
+    adminStatus.textContent = 'Não foi possível entrar. Confira seus dados.';
+    return;
+  }
+
+  const autorizado = await window.verificarSeSouAdmin();
+
+  if (!autorizado) {
+    await supabase.auth.signOut();
+    adminStatus.textContent = 'Esta conta não possui autorização administrativa.';
+    return;
+  }
+
+  adminPassword.value = '';
+  await atualizarPainelAdmin();
+});
+
+adminLogout.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  adminPassword.value = '';
+  adminStatus.textContent = 'Você saiu da área administrativa.';
+  await atualizarPainelAdmin();
+});
+
+atualizarPainelAdmin();
     
   console.log('Conexão da Sophia com Supabase preparada!');
 </script>
