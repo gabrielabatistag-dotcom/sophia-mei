@@ -96,7 +96,6 @@
   $('taskList').addEventListener('change',e=>{if(e.target.matches('input')){e.target.nextElementSibling.style.textDecoration=e.target.checked?'line-through':'none';e.target.nextElementSibling.style.opacity=e.target.checked?'.55':'1';updateCounts();}});
   $('taskForm').addEventListener('submit',e=>{e.preventDefault();const value=$('newTask').value.trim();if(!value)return;const row=document.createElement('div');row.className='task';const check=document.createElement('input');check.type='checkbox';check.setAttribute('aria-label','Concluir '+value);const label=document.createElement('label');label.textContent=value;const tag=document.createElement('span');tag.className='tag';tag.textContent='Nova';row.append(check,label,tag);$('taskList').append(row);$('newTask').value='';updateCounts();});
   function showReply(message){$('reply').style.display='block';$('reply').textContent='Recebi sua mensagem: “'+message+'”. Nesta versão inicial, o chat é demonstrativo. Na próxima etapa vamos conectar um modelo de IA por uma função segura no servidor, para que Sophia possa responder de verdade.';}
-  $('chatForm').addEventListener('submit',e=>{e.preventDefault();const value=$('message').value.trim();if(value){showReply(value);$('message').value='';}});
   document.querySelectorAll('[data-message]').forEach(b=>b.addEventListener('click',()=>{ $('message').value=b.dataset.message;$('message').focus();}));
   $('focusChat').addEventListener('click',()=>{$('chat').scrollIntoView({behavior:'smooth'});$('message').focus();});
   document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(b.dataset.section==='tarefas')document.querySelector('#taskList').scrollIntoView({behavior:'smooth'});else if(b.dataset.section==='inicio')window.scrollTo({top:0,behavior:'smooth'});else if(b.dataset.section==='memoria'||b.dataset.section==='aprovacoes'){showReply(b.dataset.section==='memoria'?'A área de memória será ativada quando conectarmos o banco de dados.':'A central de aprovações será ativada quando implementarmos o executor seguro.');$('chat').scrollIntoView({behavior:'smooth'});}}));
@@ -112,6 +111,41 @@
 
   window.sophiaSupabase = supabase;
 
+    const chatForm = document.getElementById('chatForm');
+  const messageInput = document.getElementById('message');
+  const replyBox = document.getElementById('reply');
+  const sendButton = chatForm.querySelector('button');
+
+  chatForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+    if (!message) return;
+
+    sendButton.disabled = true;
+    sendButton.textContent = 'Enviando...';
+    replyBox.style.display = 'block';
+    replyBox.textContent = 'Sophia está recebendo sua mensagem...';
+
+    try {
+      const { data, error } = await supabase.functions.invoke('sophia-chat', {
+        body: { message }
+      });
+
+      if (error) throw error;
+
+      replyBox.textContent = data.reply || 'Sophia recebeu sua mensagem.';
+      messageInput.value = '';
+
+    } catch (error) {
+      console.error('Erro no chat:', error);
+      replyBox.textContent = 'Não consegui me conectar agora. Tente novamente.';
+    } finally {
+      sendButton.disabled = false;
+      sendButton.textContent = 'Enviar';
+    }
+  });
+    
   console.log('Conexão da Sophia com Supabase preparada!');
 </script>
 </body>
